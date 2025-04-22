@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _2DGameFramework
+{
+    public class WorldObject : Entity, INamed
+    {
+        public string MyName { get; set; }
+        public bool Lootable { get; set; }
+        public bool Removeable { get; set; }
+        public WorldObject(Vector2 position, World world) : base(position, world)
+        {
+            PositionIsFixed = true;
+        }
+
+        public List<AttackItem> AttackItems { get; set; } = new List<AttackItem>();
+        public List<DefenceItem> DefenceItems { get; set; } = new List<DefenceItem>();
+
+        /// <summary>
+        /// when a creature loots this world object, it consumes it (usually removing it from the grid)
+        /// </summary>
+        /// <param name="creature">the creature consuming it</param>
+        public virtual void Consume(Creature? creature = null)
+        {
+            if (Removeable)
+                RemoveEntity();
+        }
+
+        public string Name()
+        {
+            return MyName;
+        }
+    }
+}
