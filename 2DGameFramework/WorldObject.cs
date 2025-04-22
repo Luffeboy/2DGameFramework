@@ -17,8 +17,8 @@ namespace _2DGameFramework
             world.AddWorldObject(this);
         }
 
-        public List<AttackItem> AttackItems { get; set; } = new List<AttackItem>();
-        public List<DefenceItem> DefenceItems { get; set; } = new List<DefenceItem>();
+        public List<IAttackItem> AttackItems { get; set; } = new List<IAttackItem>();
+        public List<IDefenceItem> DefenceItems { get; set; } = new List<IDefenceItem>();
 
         /// <summary>
         /// when a creature loots this world object, it consumes it (usually removing it from the grid)

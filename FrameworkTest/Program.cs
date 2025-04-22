@@ -1,14 +1,19 @@
 ﻿using _2DGameFramework;
 using FrameworkTest;
 using System.Diagnostics;
+using System.Reflection.Emit;
 using System.Text;
-//Logger.Instance.AddTraceListener(new ConsoleTraceListener());
+//Logger.Instance.AddTraceListener(new ConsoleTraceListener() { Filter = new EventTypeFilter(SourceLevels.Information) });
 
 //World world = new World(null, 3, 3);
 World world = new World();
 WorldObject wo = new WorldObject(new Vector2(1, 1), world) { MyName = "SwordShrine", Lootable = true, Removeable = false };
 wo.AttackItems.Add(new AttackItem() { HitValue=5, NameValue="Sword", RangeValue=2 });
 WorldObject wo2 = new WorldObject(new Vector2(1, 2), world) { MyName = "Nothing", Lootable = true, Removeable = true };
+WorldObject wo3 = new WorldObject(new Vector2(world.WorldSize.x / 2, world.WorldSize.y / 2 + 1), world) { MyName = "ArmorShrine", Lootable = true, Removeable = true };
+wo3.DefenceItems.Add(new CompositeDefenceItem());
+wo3.DefenceItems.Add(new DefenceItem() { NameValue = "Standard armor", ReduceHitPointsValue = 2});
+wo3.DefenceItems.Add(new DefenceItem() { NameValue = "Helmet", ReduceHitPointsValue = 1});
 
 var c = new ConcreteCreature(new Vector2(1, 0), world);
 c.MyLootStrategy = new UnableToLootStrategy();

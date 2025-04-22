@@ -141,6 +141,7 @@ namespace _2DGameFramework
             MyAttackItem.LayDown();
             MyAttackItem = MyAttackItem.AddIAttackItem(item);
             MyAttackItem.PickUp(this);
+            Logger.Instance.Log($"{Name()} now holds: " + MyAttackItem.Name(), System.Diagnostics.TraceEventType.Information);
         }
         /// <summary>
         /// Adds a defence item to this creature
@@ -154,6 +155,7 @@ namespace _2DGameFramework
                 return;
             }
             MyDefenceItem = MyDefenceItem.AddIDefenceItem(item);
+            Logger.Instance.Log($"{Name()} now holds: " + MyDefenceItem.Name(), System.Diagnostics.TraceEventType.Information);
         }
 
         private void NotifyPropertyChanged(string propertyName)
