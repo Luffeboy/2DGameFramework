@@ -52,5 +52,9 @@ namespace _2DGameFramework
             return _attackItem.Range();
         }
 
+        public void LayDown()
+        {
+            _creature = null;
+        }
     }
 }

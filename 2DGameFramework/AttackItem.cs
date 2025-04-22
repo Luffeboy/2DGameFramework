@@ -24,6 +24,10 @@ namespace _2DGameFramework
             return HitValue;
         }
 
+        public void LayDown()
+        {
+        }
+
         public string Name()
         {
             return NameValue;

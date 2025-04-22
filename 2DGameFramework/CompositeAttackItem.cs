@@ -22,6 +22,10 @@ namespace _2DGameFramework
             return _attackItems.Count == 0 ? 0 : _attackItems.Sum(a => a.Hit());
         }
 
+        public void LayDown()
+        {
+        }
+
         public string Name()
         {
             if (_attackItems.Count == 0)

@@ -14,6 +14,7 @@ namespace _2DGameFramework
         public WorldObject(Vector2 position, World world) : base(position, world)
         {
             PositionIsFixed = true;
+            world.AddWorldObject(this);
         }
 
         public List<AttackItem> AttackItems { get; set; } = new List<AttackItem>();

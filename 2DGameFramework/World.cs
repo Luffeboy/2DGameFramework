@@ -87,24 +87,28 @@ namespace _2DGameFramework
             _creatureManager.UpdateCreatures();
         }
         /// <summary>
-        /// Adds a Creature to the world
+        /// Adds a Creature to the world.
+        /// Note this is automatically called in the Creature class's constructor
         /// </summary>
         /// <param name="creature"></param>
         public void AddCreature(Creature creature)
         {
-            _creatureManager.AddCreature(creature);
+            if (!_creatureManager.Creatures.Contains(creature))
+                _creatureManager.AddCreature(creature);
         }
         //public void RemoveCreature(Creature creature)
         //{
         //    _creatureManager.RemoveCreatures(creature);
         //}
         /// <summary>
-        /// Adds a WorldObject to the world
+        /// Adds a WorldObject to the world.
+        /// Note this is automatically called in the WorldObject class's constructor
         /// </summary>
         /// <param name="obj"></param>
         public void AddWorldObject(WorldObject obj)
         {
-            _worldObjects.Add(obj);
+            if (!_worldObjects.Contains(obj))
+                _worldObjects.Add(obj);
         }
     }
 }

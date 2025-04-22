@@ -23,8 +23,20 @@ namespace _2DGameFramework
         public event PropertyChangedEventHandler? PropertyChanged;
         public IAttackItem? MyAttackItem { get; private set; }
         public IDefenceItem? MyDefenceItem { get; private set; }
-        public Creature(Vector2 position, World world) : base(position, world)
+        public ILootStrategy MyLootStrategy { get; set; }
+        /// <summary>
+        /// When creating a creature, it need a position in the world, the wold it is connected to.
+        /// As well as a starting "loot strategy".
+        /// </summary>
+        /// <param name="position">the position it start at</param>
+        /// <param name="world">the world it is in</param>
+        /// <param name="lootStrategy">It's starting loot strategy</param>
+        public Creature(Vector2 position, World world, ILootStrategy lootStrategy = null) : base(position, world)
         {
+            if (lootStrategy == null)
+                lootStrategy = new DefaultLootStrategy();
+            MyLootStrategy = lootStrategy;
+            world.AddCreature(this);
         }
 
 
@@ -111,23 +123,14 @@ namespace _2DGameFramework
         {
             if (!obj.Lootable)
                 return;
-            Logger.Instance.Log(Name() + " is looting: " + obj.Name, System.Diagnostics.TraceEventType.Information);
-            for (int i = 0; i < obj.AttackItems.Count; i++)
-            {
-                var item = obj.AttackItems[i];
-                AddAttackItem(item);
-            }
-            
-            for (int i = 0; i < obj.DefenceItems.Count; i++)
-            {
-                var item = obj.DefenceItems[i];
-                AddDefenceItem(item);
-            }
-
-            obj.Consume();
+            MyLootStrategy.Loot(this, obj);
         }
 
-        private void AddAttackItem(IAttackItem item)
+        /// <summary>
+        /// Adds an attackitem to this creature
+        /// </summary>
+        /// <param name="item">The new attack item</param>
+        public void AddAttackItem(IAttackItem item)
         {
             if (MyAttackItem == null)
             {
@@ -139,7 +142,11 @@ namespace _2DGameFramework
             MyAttackItem = MyAttackItem.AddIAttackItem(item);
             MyAttackItem.PickUp(this);
         }
-        private void AddDefenceItem(IDefenceItem item)
+        /// <summary>
+        /// Adds a defence item to this creature
+        /// </summary>
+        /// <param name="item">The new defence item</param>
+        public void AddDefenceItem(IDefenceItem item)
         {
             if (MyDefenceItem == null)
             {
