@@ -41,6 +41,9 @@ namespace _2DGameFramework
             creature.PropertyChanged -= RemoveCreature;
             Logger.Instance.Log("CreatureManager: removing creature: " + creature.Name(), System.Diagnostics.TraceEventType.Information);
         }
+        /// <summary>
+        /// Calls the Update function, on all creatures this manages
+        /// </summary>
         public void UpdateCreatures()
         {
 

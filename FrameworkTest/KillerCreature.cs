@@ -58,6 +58,8 @@ namespace FrameworkTest
                 dir.x = 0;
             }
 
+            //MoveOrAttackOrInteract(dir); // can't use this due to visitedLocations
+
             // check if there is something at the new location
             var entity = MyWorld().GetEntity(Position + dir);
             bool willMove = true;

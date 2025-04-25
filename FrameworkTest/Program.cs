@@ -3,7 +3,10 @@ using FrameworkTest;
 using System.Diagnostics;
 using System.Reflection.Emit;
 using System.Text;
-//Logger.Instance.AddTraceListener(new ConsoleTraceListener() { Filter = new EventTypeFilter(SourceLevels.Information) });
+
+bool usingLogger = false;
+if (usingLogger)
+    Logger.Instance.AddTraceListener(new ConsoleTraceListener() { Filter = new EventTypeFilter(SourceLevels.Information) });
 
 //World world = new World(null, 3, 3);
 World world = new World();
@@ -15,13 +18,13 @@ wo3.DefenceItems.Add(new CompositeDefenceItem());
 wo3.DefenceItems.Add(new DefenceItem() { NameValue = "Standard armor", ReduceHitPointsValue = 2});
 wo3.DefenceItems.Add(new DefenceItem() { NameValue = "Helmet", ReduceHitPointsValue = 1});
 
-var c = new ConcreteCreature(new Vector2(1, 0), world);
-c.MyLootStrategy = new UnableToLootStrategy();
+var c = new ConcreteCreature(new Vector2(1, 0), world, new UnableToLootStrategy());
+//c.MyLootStrategy = new UnableToLootStrategy();
 
 new KillerCreature(new Vector2(5, 0), world);
 new KillerCreature(new Vector2(world.WorldSize.x - 1, world.WorldSize.y - 1), world);
-
-new PlayerCreature(new Vector2(world.WorldSize.x / 2, world.WorldSize.y / 2), world);
+if (!usingLogger)
+    new PlayerCreature(new Vector2(world.WorldSize.x / 2, world.WorldSize.y / 2), world);
 
 for (int i = 0; i < 20; i++)
     AddCreatureAtRandomPosition(world);
@@ -46,6 +49,8 @@ void AddCreatureAtRandomPosition(World world)
 
 void DrawWorld(World world)
 {
+    if (usingLogger)
+        return;
     Console.Clear();
     StringBuilder sb = new StringBuilder();
     for (int x = 0; x < world.WorldSize.x + 2; x++)
@@ -62,11 +67,11 @@ void DrawWorld(World world)
             {
                 if (entity.GetType() == typeof(KillerCreature))
                     c = 'K';
-                if (entity.GetType() == typeof(PlayerCreature))
+                else if (entity.GetType() == typeof(PlayerCreature))
                     c = 'P';
-                else if (entity.GetType().BaseType == typeof(Creature))
+                else if (entity is Creature)
                     c = 'C';
-                else if (entity.GetType() == typeof(WorldObject))
+                else if (entity is WorldObject)
                     c = 'O';
             }
             sb.Append(c);

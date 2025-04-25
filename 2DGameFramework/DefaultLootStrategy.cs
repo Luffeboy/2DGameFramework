@@ -8,6 +8,11 @@ namespace _2DGameFramework
 {
     public class DefaultLootStrategy : ILootStrategy
     {
+        /// <summary>
+        /// Tries to loot all IAttackItems and IDefenceItems from a given WorldObject
+        /// </summary>
+        /// <param name="creature"></param>
+        /// <param name="obj"></param>
         public void Loot(Creature creature, WorldObject obj)
         {
             Logger.Instance.Log(creature.Name() + " is looting: " + obj.Name(), System.Diagnostics.TraceEventType.Information);

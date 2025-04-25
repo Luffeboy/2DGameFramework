@@ -30,7 +30,7 @@ namespace _2DGameFramework
         /// </summary>
         /// <param name="position">the position it start at</param>
         /// <param name="world">the world it is in</param>
-        /// <param name="lootStrategy">It's starting loot strategy</param>
+        /// <param name="lootStrategy">It's starting loot strategy. Note a lootStrategy of null, gives this creature the "DefaultLootStrategy"</param>
         public Creature(Vector2 position, World world, ILootStrategy lootStrategy = null) : base(position, world)
         {
             if (lootStrategy == null)
@@ -162,12 +162,51 @@ namespace _2DGameFramework
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
+        /// <summary>
+        /// Called once per world update
+        /// </summary>
         public abstract void Update();
-
+        /// <summary>
+        /// Returns MyName
+        /// </summary>
+        /// <returns>MyName</returns>
         public string Name()
         {
             return MyName;
+        }
+        /// <summary>
+        /// Try to move.
+        /// If there is a creature where it tries to move to, it will attack the creature instead.
+        /// If there is a WorldObject where it wants to move to, it loot it instead.
+        /// </summary>
+        /// <param name="dir">The direction to move</param>
+        /// <param name="allowMoveAfterAction">If it should be allowed to move, after hitting/looting, if the space got cleared</param>
+        public void MoveOrAttackOrInteract(Vector2 dir, bool allowMoveAfterAction = true)
+        {
+            // check if there is something at the new location
+            var entity = MyWorld().GetEntity(Position + dir);
+            bool willMove = true;
+            if (entity != null && entity != this)
+            {
+                willMove = false;
+                if (entity is Creature c)
+                {
+                    HitCreature(c);
+                }
+                else if (entity is WorldObject wo)
+                {
+                    TryLoot(wo);
+                }
+                // if we defeated the enemy/looted the item, we can still move
+                if (allowMoveAfterAction && MyWorld().GetEntity(Position + dir) == null)
+                    willMove = true;
+            }
+            // if not, move to it
+            if (willMove)
+            {
+                Move(dir);
+                Logger.Instance.Log(this.Name() + " is now at: " + Position, System.Diagnostics.TraceEventType.Verbose);
+            }
         }
     }
 }

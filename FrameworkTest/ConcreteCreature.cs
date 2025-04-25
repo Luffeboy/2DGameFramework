@@ -10,7 +10,7 @@ namespace FrameworkTest
     public class ConcreteCreature : Creature
     {
         Random random = new Random();
-        public ConcreteCreature(Vector2 position, World world) : base(position, world)
+        public ConcreteCreature(Vector2 position, World world, ILootStrategy? lootStrategy = null) : base(position, world, lootStrategy)
         {
             MyName = random.Next(100).ToString();
             HitPoints = 10;
@@ -27,31 +27,8 @@ namespace FrameworkTest
                 case 2: dir.y = 1; break;
                 case 3: dir.y = -1; break;
             }
-
-            // check if there is something at the new location
-            var entity = MyWorld().GetEntity(Position + dir);
-            bool willMove = true;
-            if (entity != null && entity != this)
-            {
-                willMove = false;
-                if (entity is Creature c)
-                {
-                    HitCreature(c);
-                }
-                else if (entity is WorldObject wo)
-                {
-                    TryLoot(wo);
-                }
-                // if we defeated the enemy/looted the item, we can still move
-                if (MyWorld().GetEntity(Position + dir) == null)
-                    willMove = true;
-            }
-            // if not, move to it
-            if (willMove)
-            {
-                Move(dir);
-                Logger.Instance.Log(this.Name() + " is now at: " + Position, System.Diagnostics.TraceEventType.Verbose);
-            }
+            
+            MoveOrAttackOrInteract(dir);
         }
     }
 }

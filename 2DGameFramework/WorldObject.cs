@@ -11,17 +11,16 @@ namespace _2DGameFramework
         public string MyName { get; set; }
         public bool Lootable { get; set; }
         public bool Removeable { get; set; }
+        public List<IAttackItem> AttackItems { get; set; } = new List<IAttackItem>();
+        public List<IDefenceItem> DefenceItems { get; set; } = new List<IDefenceItem>();
         public WorldObject(Vector2 position, World world) : base(position, world)
         {
             PositionIsFixed = true;
             world.AddWorldObject(this);
         }
 
-        public List<IAttackItem> AttackItems { get; set; } = new List<IAttackItem>();
-        public List<IDefenceItem> DefenceItems { get; set; } = new List<IDefenceItem>();
-
         /// <summary>
-        /// when a creature loots this world object, it consumes it (usually removing it from the grid)
+        /// When a creature loots this world object, it consumes it (usually removing it from the grid)
         /// </summary>
         /// <param name="creature">the creature consuming it</param>
         public virtual void Consume(Creature? creature = null)
@@ -29,7 +28,10 @@ namespace _2DGameFramework
             if (Removeable)
                 RemoveEntity();
         }
-
+        /// <summary>
+        /// Returns the name of this WorldObject
+        /// </summary>
+        /// <returns>MyName</returns>
         public string Name()
         {
             return MyName;
