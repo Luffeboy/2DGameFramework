@@ -123,7 +123,7 @@ namespace _2DGameFramework
         {
             if (!obj.Lootable)
                 return;
-            MyLootStrategy.Loot(this, obj);
+            MyLootStrategy?.Loot(this, obj);
         }
 
         /// <summary>

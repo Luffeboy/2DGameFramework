@@ -30,7 +30,7 @@ namespace _2DGameFramework
             if (_attackItem == null)
                 return 1;
             int damage = _attackItem.Hit();
-            if (_creature != null && _creature.HitPoints < 5) 
+            if (_creature != null && _creature.HitPoints < 5)
                 damage /= 2;
             return damage;
         }
